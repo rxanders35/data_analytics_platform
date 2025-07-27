@@ -1,0 +1,32 @@
+ingress:
+  enabled: true
+  hosts:
+    - jupyter.local
+  ingressClassName: "nginx"
+
+hub:
+  config:
+    Authenticator:
+      class: "dummy"
+
+singleuser:
+  image:
+    name: data-stack-notebook
+    tag: latest
+    # Set the pull policy for the actual user pod
+    pullPolicy: IfNotPresent
+
+  # This is the correct key confirmed by your chart's default values.
+  # This fixes the /home/jovyan volume permission error.
+  fsGid: 1000
+
+  storage:
+    type: dynamic
+    capacity: 5Gi
+    homeMountPath: /home/jovyan
+
+prePuller:
+  # This disables the pre-install hook that is failing with ImagePullBackOff.
+  # It is not required for a local Docker Desktop setup.
+  hook:
+    enabled: false

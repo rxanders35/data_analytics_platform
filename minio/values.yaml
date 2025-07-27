@@ -1,0 +1,33 @@
+ingress:
+  enabled: true
+  hosts:
+    - jupyter.local
+  ingressClassName: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+
+hub:
+  config:
+    Authenticator:
+      class: "dummy"
+
+singleuser:
+  image:
+    name: data-stack-notebook
+    tag: latest
+    pullPolicy: IfNotPresent
+  fsGid: 1000
+  storage:
+    type: dynamic
+    capacity: 5Gi
+    homeMountPath: /home/jovyan
+
+prePuller:
+  # Disable the pre-install hook
+  hook:
+    enabled: false
+  # Disable the continuous puller to prevent ImagePullBackOff errors
+  continuous:
+    enabled: false

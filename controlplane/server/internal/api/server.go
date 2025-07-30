@@ -25,7 +25,6 @@ func (s *Server) Start(addr string) error {
 }
 
 func (s *Server) registerRoutes() {
-	s.engine.GET("/healthcheck", s.handleHealthCheck())
 	s.engine.GET("/api/v1/pods", s.handleListPods())
 	s.engine.POST("/api/v1/jobs/spark", s.handleSubmitPySparkJob())
 	s.engine.POST("/api/v1/workspaces", s.handleCreateWorkspace())

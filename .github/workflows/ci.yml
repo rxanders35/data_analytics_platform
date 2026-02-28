@@ -1,0 +1,27 @@
+name: ci
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.work
+
+      - name: Verify modules
+        run: |
+          go work sync
+
+      - name: Test
+        run: make test
+
+      - name: Build
+        run: make build
